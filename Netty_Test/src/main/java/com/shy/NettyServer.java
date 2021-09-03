@@ -29,6 +29,7 @@ public class NettyServer {
                             @Override//读事件
                             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 //                                打印上一步装换好的字符串
+                                System.out.println(ctx.channel().id());
                                 System.out.println(msg);
                             }
                         });
