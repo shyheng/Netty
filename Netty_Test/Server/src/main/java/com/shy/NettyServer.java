@@ -35,44 +35,38 @@ public class NettyServer {
                                 nsc.pipeline().addLast(new ChannelInboundHandlerAdapter() {//自定义handler
                                     @Override
                                     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-//                                        String[] s = msg.toString().split(" ");
-//                                        if (s.length == 1) {
-//                                            userChannel.put(s[0], ctx.channel());
-//                                        } else {
-//                                            String write = s[0] + " " + s[2];
-//                                            userChannel.get(s[1]).writeAndFlush(userChannel.get(s[1]).alloc().buffer().writeBytes(write.getBytes()));
-//                                        }
-//
-//                                        for (int i = 0; i < group.size(); i++) {
-//                                            groups.get("s").get(i).writeAndFlush(groups.get("s").get(i).alloc().buffer().writeBytes("信息".getBytes()));
-//                                        }
-                                        String[] s = msg.toString().split(" ");
-                                        if (s.length == 1) {
-                                            userChannel.put(s[0], ctx.channel());
-                                        }else {
-                                            switch (s[1]){
+                                        String[] info = msg.toString().split(" ");
+                                        if (info.length == 1) {
+                                            userChannel.put(info[0], ctx.channel());
+                                        } else {
+                                           if (info[1].equals("chat")){
+                                               String write = info[0] + " " + info[3];
+                                               userChannel.get(info[2]).writeAndFlush(userChannel.get(info[2]).alloc().buffer().writeBytes(write.getBytes()));
+                                           }else {
+                                               switch (info[2]){
                                                 case "add":
-                                                    groups.put(s[2],new ArrayList<>());
-                                                    groups.get(s[2]).add(ctx.channel());
+                                                    groups.put(info[3],new ArrayList<>());
+                                                    groups.get(info[3]).add(ctx.channel());
                                                     break;
                                                 case "go": ;
-                                                    groups.get(s[2]).add(ctx.channel());
+                                                    groups.get(info[3]).add(ctx.channel());
                                                     break;
                                                 case "send":
 
-                                                    String write = s[0] + " " + s[3];
+                                                    String write = info[0] + " " + info[4];
 
-                                                    for (int i = 0; i < groups.get(s[2]).size(); i++) {
+                                                    for (int i = 0; i < groups.get(info[3]).size(); i++) {
 
-                                                        if (!(groups.get(s[2]).get(i).equals(ctx.channel()))){
-                                                            groups.get(s[2]).get(i).writeAndFlush(groups.get(s[2]).get(i).alloc().buffer().writeBytes(write.getBytes()));
+                                                        if (!(groups.get(info[3]).get(i).equals(ctx.channel()))){
+                                                            groups.get(info[3]).get(i).writeAndFlush(groups.get(info[3]).get(i).alloc().buffer().writeBytes(write.getBytes()));
                                                         }
                                                     }
                                                     break;
                                                 case "remove":
-                                                    groups.get(s[2]).remove(s[1]);
+                                                    groups.get(info[3]).remove(ctx.channel());
                                                     break;
                                             }
+                                           }
                                         }
                                     }
                                 });

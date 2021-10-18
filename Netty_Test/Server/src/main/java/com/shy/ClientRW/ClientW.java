@@ -30,17 +30,26 @@ public class ClientW implements Runnable {
 //                friend = scanner.next();
 //                msg = scanner.next();
 //                write = name + " " + friend + " " + msg;
-                System.out.println("输入指令");
+//                System.out.println("输入指令");
+//                String instruction = scanner.next();
+//                String group = scanner.next();
+//                String write;
+//                if (instruction.equals("send")){
+//                    String msg = scanner.next();
+//                    write = name + " " + instruction + " " + group + " " + msg;
+//                }else{
+//                    write = name + " " + instruction + " " + group;
+//                }
+                String chat = scanner.next();
                 String instruction = scanner.next();
                 String group = scanner.next();
                 String write;
                 if (instruction.equals("send")){
                     String msg = scanner.next();
-                    write = name + " " + instruction + " " + group + " " + msg;
+                    write = name + " " + chat + " " + instruction + " " + group + " " + msg;
                 }else{
-                    write = name + " " + instruction + " " + group;
+                    write = name + " " + chat + " " + instruction + " " + group;
                 }
-
                 os.write(write.getBytes());
             } catch (IOException e) {
                 return;
